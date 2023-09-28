@@ -1,6 +1,6 @@
-package models;
+package br.com.mystream.models;
 
-public class Movie {
+public class Title {
     private String name;
     private int releaseYear;
     private boolean includedInPlan;
@@ -49,9 +49,9 @@ public class Movie {
         return String.format("Name: %s%n" +
                         "Release Year: %d%n" +
                         "Included in Plan: %s%n" +
-                        "Rate: %.2f%n" +
-                        "Duration in Minutes: %d%n", name, releaseYear,
-                includedInPlan, getRateAverage(), durationInMinutes);
+                        "Rate: %.1f%n" +
+                        "Duration in Minutes: %d%n", getName(), getReleaseYear(),
+                getIncludedInPlan(), getRateAverage(), getDurationInMinutes());
     }
 
     public void rate(double note) {

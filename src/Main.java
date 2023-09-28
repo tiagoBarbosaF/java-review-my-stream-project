@@ -1,4 +1,6 @@
-import models.Movie;
+import br.com.mystream.calculations.TimeCalculator;
+import br.com.mystream.models.Movie;
+import br.com.mystream.models.Series;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,5 +18,20 @@ public class Main {
         System.out.println(movie);
         System.out.println(movie.getTotalRatings());
         System.out.printf("%.2f%n", movie.getRateAverage());
+
+        Series series = new Series();
+        series.setName("Fringe");
+        series.setSeasons(4);
+        series.setEpisodeForSeason(8);
+        series.setMinutesForEpisode(45);
+        series.setReleaseYear(2005);
+        series.rate(9.9);
+        System.out.println(series);
+        System.out.println(series.getDurationInMinutes());
+
+        TimeCalculator timeCalculator = new TimeCalculator();
+        timeCalculator.includes(movie);
+        timeCalculator.includes(series);
+        System.out.println(timeCalculator.getTotalTime());
     }
 }
