@@ -1,9 +1,11 @@
+import models.Movie;
+
 public class Main {
     public static void main(String[] args) {
         Movie movie = new Movie();
-        movie.name = "Castlevania";
-        movie.releaseYear = 2023;
-        movie.durationInMinutes = 100;
+        movie.setName("Castlevania");
+        movie.setReleaseYear(2023);
+        movie.setDurationInMinutes(100);
 
 
         movie.rate(7.5);
@@ -12,8 +14,7 @@ public class Main {
         movie.rate(8.1);
 
         System.out.println(movie);
-        System.out.println(movie.sumRating);
-        System.out.println(movie.totalRatings);
-        System.out.printf("%.2f%n",movie.getRateAverage());
+        System.out.println(movie.getTotalRatings());
+        System.out.printf("%.2f%n", movie.getRateAverage());
     }
 }
