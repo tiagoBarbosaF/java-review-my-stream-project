@@ -1,4 +1,6 @@
+import br.com.mystream.calculations.RecommendationFilter;
 import br.com.mystream.calculations.TimeCalculator;
+import br.com.mystream.models.Episode;
 import br.com.mystream.models.Movie;
 import br.com.mystream.models.Series;
 
@@ -33,5 +35,14 @@ public class Main {
         timeCalculator.includes(movie);
         timeCalculator.includes(series);
         System.out.println(timeCalculator.getTotalTime());
+
+        RecommendationFilter filter = new RecommendationFilter();
+        filter.filter(movie);
+
+        Episode episode = new Episode();
+        episode.setNumber(1);
+        episode.setSeries(series);
+        episode.setTotalViews(300);
+        filter.filter(episode);
     }
 }
