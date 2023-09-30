@@ -8,28 +8,22 @@ public class Title {
     private int totalRatings;
     private int durationInMinutes;
 
-    public String getName() {
-        return name;
+    public Title(String name, int releaseYear, boolean includedInPlan) {
+        this.name = name;
+        this.releaseYear = releaseYear;
+        this.includedInPlan = includedInPlan;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getName() {
+        return name;
     }
 
     public int getReleaseYear() {
         return releaseYear;
     }
 
-    public void setReleaseYear(int releaseYear) {
-        this.releaseYear = releaseYear;
-    }
-
     public boolean getIncludedInPlan() {
         return includedInPlan;
-    }
-
-    public void setIncludedInPlan(boolean includedInPlan) {
-        this.includedInPlan = includedInPlan;
     }
 
     public int getTotalRatings() {
@@ -46,12 +40,10 @@ public class Title {
 
     @Override
     public String toString() {
-        return String.format("Name: %s%n" +
-                        "Release Year: %d%n" +
-                        "Included in Plan: %s%n" +
-                        "Rate: %.1f%n" +
-                        "Duration in Minutes: %d%n", getName(), getReleaseYear(),
-                getIncludedInPlan(), getRateAverage(), getDurationInMinutes());
+        return String.format("{\"Name\": \"%s\", \"ReleaseYear\": %d, " +
+                        "\"IncludedInPlan\": \"%s\", \"Rate\": %.1f}",
+                getName(), getReleaseYear(),
+                getIncludedInPlan(), getRateAverage());
     }
 
     public void rate(double note) {

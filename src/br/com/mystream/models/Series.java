@@ -1,17 +1,23 @@
 package br.com.mystream.models;
 
+import java.util.ArrayList;
+
 public class Series extends Title {
     private int seasons;
     private boolean active;
     private int episodesForSeason;
-    private int minutesForEpisode;
+    private int totalMinutesForSeason;
+    private ArrayList<Episode> episodes;
+
+    public Series(String name, int releaseYear, boolean includedInPlan, int seasons, int episodesForSeason) {
+        super(name, releaseYear, includedInPlan);
+        this.seasons = seasons;
+        this.episodesForSeason = episodesForSeason;
+        this.episodes = new ArrayList<>();
+    }
 
     public int getSeasons() {
         return seasons;
-    }
-
-    public void setSeasons(int seasons) {
-        this.seasons = seasons;
     }
 
     public boolean getActive() {
@@ -26,20 +32,19 @@ public class Series extends Title {
         return episodesForSeason;
     }
 
-    public void setEpisodeForSeason(int episodesForSeason) {
-        this.episodesForSeason = episodesForSeason;
+    public int getTotalMinutesForSeason() {
+        totalMinutesForSeason = this.episodes
+                .stream()
+                .mapToInt(Episode::getMinutesForEpisodes)
+                .sum();
+        return totalMinutesForSeason;
     }
 
-    public int getMinutesForEpisode() {
-        return minutesForEpisode;
+    public ArrayList<Episode> getEpisodes() {
+        return episodes;
     }
 
-    public void setMinutesForEpisode(int minutesForEpisode) {
-        this.minutesForEpisode = minutesForEpisode;
-    }
-
-    @Override
-    public int getDurationInMinutes() {
-        return (seasons * episodesForSeason) * minutesForEpisode;
+    public void addEpisode(Episode episode) {
+        this.episodes.add(episode);
     }
 }

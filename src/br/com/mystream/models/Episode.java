@@ -6,38 +6,38 @@ public class Episode implements Sortable {
     private String name;
     private int number;
     private Series series;
-    private int totalViews;
+    private final int minutesForEpisodes;
+    private static int totalViews;
+
+    public Episode(String name, int number, Series series, int minutesForEpisodes) {
+        this.name = name;
+        this.number = number;
+        this.series = series;
+        this.minutesForEpisodes = minutesForEpisodes;
+    }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
     public Series getSeries() {
         return series;
     }
 
-    public void setSeries(Series series) {
-        this.series = series;
+    public int getMinutesForEpisodes() {
+        return minutesForEpisodes;
     }
 
     public int getTotalViews() {
         return totalViews;
     }
 
-    public void setTotalViews(int totalViews) {
-        this.totalViews = totalViews;
+    public void playEpisode() {
+        totalViews++;
     }
 
     @Override

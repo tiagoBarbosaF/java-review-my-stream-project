@@ -5,12 +5,15 @@ import br.com.mystream.calculations.Sortable;
 public class Movie extends Title implements Sortable {
     private String director;
 
-    public String getDirector() {
-        return director;
+    public Movie(String name, int releaseYear, boolean includedInPlan,
+                 int durationInMinutes, String director) {
+        super(name, releaseYear, includedInPlan);
+        this.setDurationInMinutes(durationInMinutes);
+        this.director = director;
     }
 
-    public void setDirector(String director) {
-        this.director = director;
+    public String getDirector() {
+        return director;
     }
 
     @Override
