@@ -1,6 +1,6 @@
 package br.com.mystream.models;
 
-public class Title {
+public class Title implements Comparable<Title> {
     private String name;
     private int releaseYear;
     private boolean includedInPlan;
@@ -56,5 +56,10 @@ public class Title {
             return 0;
         }
         return sumRating / totalRatings;
+    }
+
+    @Override
+    public int compareTo(Title otherTitle) {
+        return this.getName().compareTo(otherTitle.getName());
     }
 }
