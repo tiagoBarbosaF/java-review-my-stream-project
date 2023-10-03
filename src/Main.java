@@ -1,62 +1,30 @@
-import br.com.mystream.models.Movie;
-import br.com.mystream.models.Series;
-import br.com.mystream.models.Title;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Movie movie = new Movie("Castlevania", 2023, true, 100, "Bob Bob");
-        movie.rate(7.5);
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Search title: ");
+        String search = scanner.nextLine();
 
-        Series series = new Series("Fringe", 2005, false, 4, 8);
-        series.rate(9.9);
+        String url = String.format("%s%s%s", "http://www.omdbapi.com/?t=",
+                search.trim().replace(" ", "+"), "&apikey=a9399783");
 
-        Movie movie2 = new Movie("One Piece Z", 2010, true, 100, "Eichiro Oda");
-        movie2.rate(9);
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .build();
 
-        ArrayList<Title> list = new ArrayList<>();
-        list.add(movie);
-        list.add(movie2);
-        list.add(series);
-
-        System.out.println("\nUsing foreach");
-        for (Title title :
-                list) {
-            System.out.println(title.getName());
+        try {
+            HttpResponse<String> response = client.send(request,
+                    HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.body());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
-
-        System.out.println("\nUsing lambda foreach");
-        List<Movie> movies = list.stream()
-                .filter(title -> title instanceof Movie)
-                .map(title -> (Movie) title)
-                .toList();
-        movies.forEach(item -> System.out.println(item.getClassification()));
-
-//        Collections.sort(list);
-        list.forEach(item -> System.out.println(item.getName()));
-        list.sort(Title::compareTo);
-        System.out.println(list);
-        list.sort(Comparator.comparing(Title::getReleaseYear));
-        System.out.println(list);
-
-
-        System.out.println("\nPracticing with lists:");
-        ArrayList<String> fruits = new ArrayList<>();
-        fruits.add("Banana");
-        fruits.add("Pineapple");
-        fruits.add("Strawberry");
-        fruits.add("Pearl");
-        fruits.add("Apple");
-        fruits.add("Kiwi");
-        fruits.add("Grape");
-        fruits.add("Orange");
-        System.out.println(fruits);
-
-        fruits.sort(String::compareTo);
-        System.out.println(fruits);
     }
 }
