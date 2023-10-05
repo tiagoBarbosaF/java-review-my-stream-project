@@ -5,48 +5,73 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Search title: ");
-        String search = scanner.nextLine();
+        String search = "";
+        List<Title> listTitles = new ArrayList<>();
 
-        String url = String.format("%s%s%s", "http://www.omdbapi.com/?t=",
-                search.trim().replace(" ", "+"), "&apikey=a9399783");
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .build();
-        Gson gson =
-                new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .setPrettyPrinting()
+                .create();
 
         try {
-            HttpResponse<String> response = client.send(request,
-                    HttpResponse.BodyHandlers.ofString());
+            FileWriter writer = new FileWriter("movies.json", true);
+            while (!search.equalsIgnoreCase("exit")) {
+                System.out.print("Search title: ");
+                search = scanner.nextLine();
 
-            String json = response.body();
+                String url = String.format("%s%s%s", "http://www.omdbapi.com/?t=",
+                        search.trim().replace(" ", "+"), "&apikey=a9399783");
+                HttpClient client = HttpClient.newHttpClient();
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(url))
+                        .build();
 
-            System.out.println(json);
+                if (search.equalsIgnoreCase("exit")) {
+                    break;
+                }
 
-            OmdbTitle titleOmdb = gson.fromJson(json, OmdbTitle.class);
+                try {
+                    HttpResponse<String> response = client.send(request,
+                            HttpResponse.BodyHandlers.ofString());
 
-            System.out.println(titleOmdb);
+                    String json = response.body();
 
-            Title title = new Title(titleOmdb);
+                    System.out.println(json);
 
-            System.out.println(title);
+                    OmdbTitle titleOmdb = gson.fromJson(json, OmdbTitle.class);
 
-        } catch (IOException | InterruptedException | NumberFormatException |
-                 MyPersonalException e) {
-            System.out.print("Error: " + e.getMessage());
+                    Title title = new Title(titleOmdb);
+
+                    listTitles.add(title);
+
+                } catch (IOException | InterruptedException |
+                         NumberFormatException |
+                         MyPersonalException e) {
+                    System.out.print("Error: " + e.getMessage());
+                }
+            }
+            writer.write(gson.toJson(listTitles));
+            writer.close();
+            System.out.println("\nProgram finished!");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 }
