@@ -1,3 +1,4 @@
+import br.com.mystream.exceptions.MyPersonalException;
 import br.com.mystream.models.OmdbTitle;
 import br.com.mystream.models.Title;
 import com.google.gson.FieldNamingPolicy;
@@ -26,21 +27,26 @@ public class Main {
                 .build();
         Gson gson =
                 new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
+
         try {
             HttpResponse<String> response = client.send(request,
                     HttpResponse.BodyHandlers.ofString());
+
             String json = response.body();
+
             System.out.println(json);
+
             OmdbTitle titleOmdb = gson.fromJson(json, OmdbTitle.class);
+
             System.out.println(titleOmdb);
 
             Title title = new Title(titleOmdb);
 
             System.out.println(title);
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+
+        } catch (IOException | InterruptedException | NumberFormatException |
+                 MyPersonalException e) {
+            System.out.print("Error: " + e.getMessage());
         }
-
-
     }
 }

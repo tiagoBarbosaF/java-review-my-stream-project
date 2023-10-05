@@ -1,8 +1,7 @@
 package br.com.mystream.models;
 
+import br.com.mystream.exceptions.MyPersonalException;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.Arrays;
 
 public class Title implements Comparable<Title> {
     @SerializedName("Title")
@@ -22,6 +21,10 @@ public class Title implements Comparable<Title> {
 
     public Title(OmdbTitle titleOmdb) {
         this.name = titleOmdb.title();
+
+        if (titleOmdb.year().length() > 4){
+            throw new MyPersonalException("Year cannot be converted.");
+        }
         this.releaseYear = Integer.parseInt(titleOmdb.year());
         this.durationInMinutes =
                 Integer.parseInt(titleOmdb.runtime().substring(0, 3).trim());

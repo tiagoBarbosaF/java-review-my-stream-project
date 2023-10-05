@@ -9,7 +9,7 @@ public class TimeCalculator {
         return totalTime;
     }
 
-//    public void includes(Title title) {
-//        totalTime += title.getDurationInMinutes();
-//    }
+    public void includes(Title title) {
+        totalTime += title.getDurationInMinutes();
+    }
 }
